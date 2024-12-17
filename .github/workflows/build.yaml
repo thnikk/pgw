@@ -1,0 +1,40 @@
+name: Build pgw binary with Pyinstaller
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.7
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+        working-directory: ./
+
+      - name: Install PyInstaller
+        run: |
+          pip install pyinstaller
+        working-directory: ./
+
+      - name: Build binary
+        run: |
+          pyinstaller pgw.spec
+
+      - name: Create Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pgw
+          path: dist/
+
+      - name: List files in dist folder
+        run: ls -R ./dist/
+
