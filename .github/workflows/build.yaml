@@ -15,19 +15,23 @@ jobs:
         with:
           python-version: 3.12.7
 
+      - name: Create virtualenv
+        run: |
+          python -m venv ~/.venv/pgw
+
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          ~/.venv/pgw/bin/pip install -r requirements.txt
         working-directory: ./
 
       - name: Install PyInstaller
         run: |
-          pip install pyinstaller
+          ~/.venv/pgw/bin/pip install pyinstaller
         working-directory: ./
 
       - name: Build binary
         run: |
-          pyinstaller pgw.spec
+          ~/.venv/pgw/bin/pyinstaller pgw.spec
 
       - name: Create Artifact
         uses: actions/upload-artifact@v4
